@@ -3,9 +3,31 @@ import './App.css'
 
 function App() {
   const [sliderPosition, setSliderPosition] = useState(50)
+  const [uploadedImage, setUploadedImage] = useState(null)
 
   const handleSliderChange = (e) => {
     setSliderPosition(e.target.value)
+  }
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const imageUrl = URL.createObjectURL(file)
+      setUploadedImage(imageUrl)
+    }
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    const file = e.dataTransfer.files[0]
+    if (file) {
+      const imageUrl = URL.createObjectURL(file)
+      setUploadedImage(imageUrl)
+    }
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
   }
 
   return (
@@ -22,11 +44,34 @@ function App() {
 
       <main className="main">
         <section className="upload-section">
-          <div className="upload-box">
-            <div className="upload-icon">▣</div>
-            <p className="upload-text">Drop an infrared satellite image here</p>
-            <p className="upload-hint">or click to browse · PNG, JPG, TIFF</p>
-          </div>
+          <label
+            htmlFor="file-input"
+            className="upload-box"
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          >
+            {uploadedImage ? (
+              <img src={uploadedImage} alt="Uploaded preview" className="uploaded-preview" />
+            ) : (
+              <>
+                <div className="upload-icon">▣</div>
+                <p className="upload-text">Drop an infrared satellite image here</p>
+                <p className="upload-hint">or click to browse · PNG, JPG, TIFF</p>
+              </>
+            )}
+          </label>
+          <input
+            id="file-input"
+            type="file"
+            accept="image/*"
+            onChange={handleFileSelect}
+            style={{ display: 'none' }}
+          />
+          {uploadedImage && (
+            <button className="clear-button" onClick={() => setUploadedImage(null)}>
+              Remove image
+            </button>
+          )}
         </section>
 
         <section className="comparison-section">
