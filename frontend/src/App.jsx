@@ -5,45 +5,44 @@ function App() {
   const [sliderPosition, setSliderPosition] = useState(50)
   const [uploadedImage, setUploadedImage] = useState(null)
 
-  const handleSliderChange = (e) => {
-    setSliderPosition(e.target.value)
-  }
+  const handleSliderChange = (e) => setSliderPosition(e.target.value)
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0]
-    if (file) {
-      const imageUrl = URL.createObjectURL(file)
-      setUploadedImage(imageUrl)
-    }
+    if (file) setUploadedImage(URL.createObjectURL(file))
   }
 
   const handleDrop = (e) => {
     e.preventDefault()
     const file = e.dataTransfer.files[0]
-    if (file) {
-      const imageUrl = URL.createObjectURL(file)
-      setUploadedImage(imageUrl)
-    }
+    if (file) setUploadedImage(URL.createObjectURL(file))
   }
 
-  const handleDragOver = (e) => {
-    e.preventDefault()
-  }
+  const handleDragOver = (e) => e.preventDefault()
+
+  const displayImage = uploadedImage || 'https://picsum.photos/seed/satview1/700/450'
 
   return (
     <div className="dashboard">
       <header className="header">
         <div className="header-content">
-          <span className="eyebrow">BHARAT ANTRIKSH HACKATHON</span>
+          <span className="eyebrow">BHARAT ANTRIKSH HACKATHON · TEAM SUBMISSION</span>
           <h1 className="title">IR2RGB-NET</h1>
           <p className="subtitle">
             Infrared satellite imagery, enhanced and recolorized for real object interpretation.
           </p>
+          <div className="status-row">
+            <span className="status-dot" />
+            <span className="status-text">
+              {uploadedImage ? 'MODEL STATUS: PREVIEWING INPUT' : 'MODEL STATUS: AWAITING INPUT'}
+            </span>
+          </div>
         </div>
       </header>
 
       <main className="main">
         <section className="upload-section">
+          <span className="kicker">01 · INPUT</span>
           <label
             htmlFor="file-input"
             className="upload-box"
@@ -75,12 +74,16 @@ function App() {
         </section>
 
         <section className="comparison-section">
-          <h2 className="section-title">Before / After</h2>
+          <span className="kicker">02 · OUTPUT PREVIEW</span>
+          <h2 className="section-title">Infrared → RGB</h2>
+          <p className="section-note">
+            Placeholder preview — final colorization will use our trained Pix2Pix model (in progress by team).
+          </p>
           <div className="comparison-container">
             <div className="comparison-image-wrap">
               <img
-                src="https://picsum.photos/seed/satview1/700/450"
-                alt="RGB output"
+                src={displayImage}
+                alt="RGB preview"
                 className="comparison-image base-image"
               />
               <div
@@ -88,17 +91,16 @@ function App() {
                 style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
               >
                 <img
-                  src="https://picsum.photos/seed/satview1/700/450"
-                  alt="IR input"
+                  src={displayImage}
+                  alt="IR preview"
                   className="comparison-image ir-style"
                 />
               </div>
-              <div
-                className="slider-line"
-                style={{ left: `${sliderPosition}%` }}
-              >
+              <div className="slider-line" style={{ left: `${sliderPosition}%` }}>
                 <div className="slider-handle">⇔</div>
               </div>
+              <span className="tag tag-left">IR</span>
+              <span className="tag tag-right">RGB</span>
             </div>
             <input
               type="range"
@@ -108,15 +110,11 @@ function App() {
               onChange={handleSliderChange}
               className="comparison-slider"
             />
-            <div className="comparison-labels">
-              <span>Infrared</span>
-              <span>RGB Output</span>
-            </div>
           </div>
         </section>
 
         <section className="metrics-section">
-          <h2 className="section-title">Evaluation Metrics</h2>
+          <span className="kicker">03 · MODEL TELEMETRY</span>
           <div className="metrics-grid">
             <div className="metric-card">
               <span className="metric-label">PSNR</span>
@@ -134,13 +132,17 @@ function App() {
               <span className="metric-desc">Fréchet Inception Distance</span>
             </div>
             <div className="metric-card">
-              <span className="metric-label">Inference Time</span>
+              <span className="metric-label">Inference</span>
               <span className="metric-value">0.42<span className="metric-unit">s</span></span>
               <span className="metric-desc">Per image, GPU</span>
             </div>
           </div>
         </section>
       </main>
+
+      <footer className="footer">
+        <span>IR2RGB-NET · Built for Bharat Antriksh Hackathon</span>
+      </footer>
     </div>
   )
 }
