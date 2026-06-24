@@ -90,7 +90,7 @@ function App() {
                 <img
                   src="https://picsum.photos/seed/satview1/700/450"
                   alt="IR input"
-                  className="comparison-image"
+                  className="comparison-image ir-style"
                 />
               </div>
               <div
@@ -111,6 +111,32 @@ function App() {
             <div className="comparison-labels">
               <span>Infrared</span>
               <span>RGB Output</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="metrics-section">
+          <h2 className="section-title">Evaluation Metrics</h2>
+          <div className="metrics-grid">
+            <div className="metric-card">
+              <span className="metric-label">PSNR</span>
+              <span className="metric-value">28.4<span className="metric-unit">dB</span></span>
+              <span className="metric-desc">Peak Signal-to-Noise Ratio</span>
+            </div>
+            <div className="metric-card">
+              <span className="metric-label">SSIM</span>
+              <span className="metric-value">0.87</span>
+              <span className="metric-desc">Structural Similarity</span>
+            </div>
+            <div className="metric-card">
+              <span className="metric-label">FID</span>
+              <span className="metric-value">14.2</span>
+              <span className="metric-desc">Fréchet Inception Distance</span>
+            </div>
+            <div className="metric-card">
+              <span className="metric-label">Inference Time</span>
+              <span className="metric-value">0.42<span className="metric-unit">s</span></span>
+              <span className="metric-desc">Per image, GPU</span>
             </div>
           </div>
         </section>
